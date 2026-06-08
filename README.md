@@ -1,2 +1,272 @@
-# WDI-Dataset-Visualisation
-Wealth, Health &amp; Growth: A Comprehensive Visual Analysis of the World Bank WDI Dataset
+# LDS7004M Data Visualisation Portfolio
+
+## Wealth, Health and Growth: A Visual Analysis of the World Bank WDI Dataset (1990–2022)
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/NK008/LDS7004M-DataViz-WDI/blob/main/LDS7004M_Advanced_Notebook.ipynb)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
+---
+
+**York St John University | London Campus | MSc Data Science | LDS7004M Data Visualisation**
+
+| Detail | Value |
+|---|---|
+| **Student** | Nareshkumar Shanmugathas |
+| **Student ID** | 250274615 |
+| **Module** | LDS7004M Data Visualisation |
+| **Deadline** | 9 June 2026, 12:00 Noon |
+| **Module Leader** | Sangita Pokhrel |
+
+---
+
+## Table of Contents
+
+1. [Research Question](#research-question)
+2. [Key Findings](#key-findings)
+3. [Dataset](#dataset)
+4. [Repository Structure](#repository-structure)
+5. [Visualisations](#visualisations)
+6. [How to Run](#how-to-run)
+7. [Cloud Infrastructure](#cloud-infrastructure)
+8. [Requirements](#requirements)
+9. [Academic References](#academic-references)
+10. [Licence](#licence)
+
+---
+
+## Research Question
+
+> *Does national wealth, measured as GDP per capita, predict how long people live and how fast populations grow — and has this relationship changed between 1990 and 2022?*
+
+---
+
+## Key Findings
+
+| Finding | Evidence |
+|---|---|
+| Income strongly predicts life expectancy | Pearson r = +0.792, p < 0.001, n = 209 |
+| Relationship is log-linear not linear | log(GDP) r = +0.79 vs raw GDP r = +0.55 |
+| Preston Curve shifted upward 1990–2022 | OLS intercept increased ~5 years |
+| COVID-19 reversed a decade of health progress | Global life expectancy fell 1.6 years (2019–2021) |
+| 18.4-year gap between income group extremes | Low income 61.2 yrs vs High income 79.6 yrs |
+| Population growth inversely linked to income | r(life exp, pop growth) = −0.71 |
+| South Asia made the largest regional gains | +12 years median life expectancy 1995–2022 |
+
+---
+
+## Dataset
+
+- **Source:** [World Bank World Development Indicators (WDI)](https://databank.worldbank.org/source/world-development-indicators)
+- **Coverage:** 217 sovereign countries, 1990–2022 (33 years)
+- **Observations:** 7,161 country-year rows after cleaning
+- **Files:** 6 CSV files (WDICSV, WDICountry, WDISeries, WDIcountry-series, WDIfootnote, WDIseries-time)
+
+### Indicators Used
+
+| WDI Code | Variable | Unit | Completeness |
+|---|---|---|---|
+| NY.GDP.PCAP.CD | GDP per capita | Current USD | 95.1% |
+| SP.DYN.LE00.IN | Life expectancy at birth | Years | 100.0% |
+| SP.POP.TOTL | Total population | Persons | 100.0% |
+
+> **Note:** The raw WDI CSV files are not included in this repository due to file size. Download them free from the [World Bank DataBank](https://databank.worldbank.org/source/world-development-indicators). See `data/README_data.md` for full download instructions.
+
+---
+
+## Repository Structure
+
+```
+LDS7004M-DataViz-WDI/
+│
+├── LDS7004M_Advanced_Notebook.ipynb          ← Main notebook (run this)
+├── LDS7004M_Advanced_Notebook_Executed.ipynb ← Executed version with all outputs
+│
+├── src/
+│   └── wdi_analysis.py                       ← Standalone Python script
+│
+├── figures/
+│   ├── fig01_missing_heatmap.png
+│   ├── fig02_histogram_kde.png
+│   ├── fig03_kde_plots.png
+│   ├── fig04_ecdf.png
+│   ├── fig05_preston_curve.png
+│   └── ...                                   ← All 23 static + 8 interactive figures
+│
+├── data/
+│   └── README_data.md                        ← Dataset download instructions
+│
+├── report/
+│   └── LDS7004M_Final_Report.docx            ← Written report
+│
+├── requirements.txt                          ← Python dependencies
+├── LICENSE                                   ← MIT Licence
+└── README.md                                 ← This file
+```
+
+---
+
+## Visualisations
+
+31 visualisations in total — 23 static (Seaborn/Matplotlib) and 8 interactive (Plotly).
+
+### Static Charts — Seaborn and Matplotlib (Figures 1–23)
+
+| Figure | Chart Type | Section | Key Insight |
+|---|---|---|---|
+| 1 | Missing value heatmap | Data Cleaning | GDP missingness concentrated 1990–1995 |
+| 2 | Histogram + KDE + normal fit | Univariate EDA | GDP extreme positive skew confirms log transform needed |
+| 3 | KDE plots — filled, multi-group, bimodal | Univariate EDA | Clear income group separation in life expectancy |
+| 4 | ECDF plots | Univariate EDA | 100% of Low income countries below 70 years |
+| 5 | Preston Curve — scatter + LOESS + OLS + 95% CI | Bivariate | r = +0.792, slope = 13.3 yrs per log-unit |
+| 6 | Joint plot with marginal distributions | Bivariate | Confirms log-linear relationship shape |
+| 7 | Line chart — regional trends + moving average + CI | Temporal | COVID-19 dip 2020–2021 clearly visible |
+| 8 | Box plot — all structural lines annotated | Categorical | 18.4-year income group gap |
+| 9 | Boxen + violin + swarm plots | Categorical | Within-group distributional heterogeneity |
+| 10 | Point plot with 95% CI error bars | Categorical | Uncertainty around group means |
+| 11 | Bar chart + count plot + Pareto chart | Categorical | North America + Europe = 80% of global GDP |
+| 12 | lmplot — separate OLS per income group | Regression | Steepest gradient in Low income group |
+| 13 | Logistic regression curve | Regression | Decision boundary at ~$15–20K GDP per capita |
+| 14 | Residual plot + Q-Q plot | Regression Diagnostics | Moderate heteroscedasticity at mid-income |
+| 15 | Correlation heatmap + Preston Curve temporal shift | Matrix | Curve shifted upward ~5 years 1990–2022 |
+| 16 | Pair plot | Multi-variable | Complete bivariate relationship structure |
+| 17 | PairGrid — custom diagonal/upper/lower | Multi-variable | Three plot types in one figure |
+| 18 | FacetGrid col=Income Group | Small Multiples | Within-group income-health gradient |
+| 19 | FacetGrid col=Region col_wrap=2 | Small Multiples | South Asia +12 years since 1990 |
+| 20 | Bubble chart + quadrant lines + threshold fills | Advanced Overlays | Cuba over-performer, Nigeria under-performer |
+| 21 | All 5 Seaborn styles | Styling Showcase | whitegrid selected as default |
+| 22 | All 4 Seaborn contexts | Styling Showcase | notebook context used throughout |
+| 23 | All 6 Seaborn colour palettes | Styling Showcase | colorblind-safe palette recommended |
+
+### Interactive Charts — Plotly (Figures P1–P8)
+
+| Figure | Chart Type | Key Interactive Feature |
+|---|---|---|
+| P1 | Animated scatter — Preston Curve 1990–2022 | Play button + year slider + hover tooltips |
+| P2 | Choropleth world map — life expectancy | Hover tooltips per country + zoom/pan |
+| P3 | Choropleth world map — GDP per capita | Log-scale colour + hover tooltips |
+| P4 | Sunburst diagram — Region → Income → Country | Click to zoom into any region or income group |
+| P5 | Treemap — population by region/income | Area = population, colour = health, hover tooltips |
+| P6 | Bubble chart — GDP, health, population by region | Click legend to show/hide regions |
+| P7 | Stacked area chart — regional trends | Hover to see all regional values at any year |
+| P8 | Parallel coordinates — income group profiles | Drag on any axis to create a brush filter |
+
+---
+
+## How to Run
+
+### Option 1 — Google Colab from GitHub (Recommended)
+
+> No installation required — runs entirely in the browser.
+
+1. Click the **Open in Colab** badge at the top of this README
+2. Or open directly: [LDS7004M_Advanced_Notebook.ipynb in Colab](https://colab.research.google.com/github/NK008/LDS7004M-DataViz-WDI/blob/main/LDS7004M_Advanced_Notebook.ipynb)
+3. Upload the 6 WDI CSV files using the Files panel (folder icon in the left sidebar)
+4. In Section 1, change `DATA_DIR = '/mnt/user-data/uploads'` to `DATA_DIR = '/content'`
+5. Click **Runtime → Run all** (Ctrl+F9)
+6. All 23 static figures generate in approximately 4–6 minutes
+7. Run the final Section 14 cell to download all 31 figures as a zip file
+
+---
+
+### Option 2 — Google Colab with Azure Blob Storage (Persistent)
+
+> Use this option if your WDI files are stored in Azure — no re-upload needed each session.
+
+Add this cell at the very top of the notebook before Section 1:
+
+```python
+# ── Azure Blob Storage Setup ────────────────────────────────
+!pip install azure-storage-blob -q
+
+from azure.storage.blob import BlobServiceClient
+import os
+
+CONN_STR  = "YOUR_AZURE_CONNECTION_STRING"   # Replace with your key
+CONTAINER = "dataset"
+LOCAL_DIR = "/content/wdi_data"
+
+os.makedirs(LOCAL_DIR, exist_ok=True)
+
+client = BlobServiceClient.from_connection_string(CONN_STR)
+cc     = client.get_container_client(CONTAINER)
+
+for blob in cc.list_blobs():
+    with open(os.path.join(LOCAL_DIR, blob.name), "wb") as f:
+        f.write(cc.download_blob(blob.name).readall())
+    print(f"Downloaded: {blob.name}")
+
+DATA_DIR = LOCAL_DIR
+print("All files ready!")
+```
+
+---
+
+### Option 3 — Local Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/NK008/LDS7004M-DataViz-WDI.git
+cd LDS7004M-DataViz-WDI
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Launch the notebook
+jupyter notebook LDS7004M_Advanced_Notebook.ipynb
+```
+
+---
+
+## Cloud Infrastructure
+
+| Service | Purpose | Details |
+|---|---|---|
+| Azure Blob Storage | Persistent dataset storage | Container: dataset, Region: UK South |
+| Google Colab | Notebook execution environment | Python 3, GPU runtime available |
+| Power BI Online | Interactive business dashboard | 6 visuals + year slicer + animated charts |
+| GitHub | Version control and portfolio hosting | Public repo with Colab integration |
+
+---
+
+## Requirements
+
+Install all dependencies with:
+
+```bash
+pip install -r requirements.txt
+```
+
+| Package | Version | Purpose |
+|---|---|---|
+| pandas | >=2.0.0 | Data manipulation |
+| numpy | >=1.24.0 | Numerical computing |
+| matplotlib | >=3.7.0 | Static visualisations |
+| seaborn | >=0.13.0 | Statistical visualisations |
+| scipy | >=1.10.0 | Statistical tests |
+| statsmodels | >=0.14.0 | Regression modelling |
+| plotly | >=5.15.0 | Interactive visualisations |
+| kaleido | >=0.2.1 | Plotly static export |
+| azure-storage-blob | >=12.0.0 | Azure cloud storage access |
+| jupyter | >=1.0.0 | Notebook environment |
+
+---
+
+## Academic References
+
+- Cairo, A. (2016) *The Truthful Art: Data, Charts, and Maps for Communication*. San Francisco: New Riders.
+- Preston, S.H. (1975) 'The changing relationship between mortality and level of economic development', *Population Studies*, 29(2), pp. 231–248.
+- Tufte, E.R. (2001) *The Visual Display of Quantitative Information*. 2nd edn. Cheshire, CT: Graphics Press.
+- Waskom, M.L. (2021) 'Seaborn: statistical data visualization', *Journal of Open Source Software*, 6(60), article 3021.
+- Wilke, C.O. (2019) *Fundamentals of Data Visualisation*. Sebastopol: O'Reilly Media.
+- World Bank (2024) *World Development Indicators*. [online] Available at: https://databank.worldbank.org [Accessed: April 2026].
+
+---
+
+## Licence
+
+This project is licensed under the MIT Licence. See [`LICENSE`](LICENSE) for full details.
+
+---
+
+*York St John University — London Campus — MSc Data Science 2025/26*
